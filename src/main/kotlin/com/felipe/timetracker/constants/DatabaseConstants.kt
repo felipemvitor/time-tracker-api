@@ -14,6 +14,7 @@ object DatabaseConstants {
     const val ACTIVITY_TABLE = "activity"
     const val DATE_START = "date_start"
     const val DATE_END = "date_end"
+    const val CATEGORY_ID = "category_id"
 
     // Categories
     const val CATEGORY_TABLE = "category"
