@@ -16,5 +16,5 @@ data class ActivityRequest(
     val dateEnd: Long,
 
     @NotNull
-    var category: CategoryIdRequest
+    val category: CategoryIdRequest
 )

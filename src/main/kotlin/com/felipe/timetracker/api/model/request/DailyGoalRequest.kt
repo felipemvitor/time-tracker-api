@@ -7,11 +7,11 @@ import javax.validation.constraints.NotNull
 data class DailyGoalRequest(
 
     @NotBlank
-    var name: String,
+    val name: String,
 
     @NotNull
-    var yearGoal: Long,
+    val yearGoal: Long,
 
     @NotNull
-    var wowGoalMultiplier: Double
+    val wowGoalMultiplier: Double
 )

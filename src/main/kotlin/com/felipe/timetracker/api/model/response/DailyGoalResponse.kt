@@ -1,4 +1,10 @@
 package com.felipe.timetracker.api.model.response
 
-class DailyGoalResponse {
-}
+data class DailyGoalResponse(
+    val id: Long?,
+    val name: String,
+    val yearGoal: Long,
+    val weeklyGoal: Long,
+    val dailyGoal: Long,
+    val wowGoalMultiplier: Double
+)

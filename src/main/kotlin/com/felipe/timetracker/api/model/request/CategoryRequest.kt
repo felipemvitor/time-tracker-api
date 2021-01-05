@@ -6,8 +6,8 @@ import javax.validation.constraints.Positive
 data class CategoryRequest(
 
     @NotBlank
-    var name: String,
+    val name: String,
 
     @Positive
-    var yearGoal: Long
+    val yearGoal: Long
 )
