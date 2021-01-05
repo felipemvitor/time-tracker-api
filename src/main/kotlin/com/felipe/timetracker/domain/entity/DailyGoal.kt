@@ -1,4 +1,4 @@
-package com.felipe.timetracker.entity
+package com.felipe.timetracker.domain.entity
 
 import com.felipe.timetracker.constants.DatabaseConstants
 import com.felipe.timetracker.constants.DatabaseConstants.DAILY_GOAL
