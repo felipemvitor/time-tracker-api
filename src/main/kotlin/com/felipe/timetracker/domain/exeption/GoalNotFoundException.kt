@@ -1,6 +1,6 @@
 package com.felipe.timetracker.domain.exeption
 
-class DailyGoalNotFoundException : EntityNotFoundException {
+class GoalNotFoundException : EntityNotFoundException {
 
     constructor(message: String) : super(message)
 

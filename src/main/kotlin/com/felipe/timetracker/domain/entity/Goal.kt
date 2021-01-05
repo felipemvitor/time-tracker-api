@@ -1,12 +1,12 @@
 package com.felipe.timetracker.domain.entity
 
 import com.felipe.timetracker.constants.DatabaseConstants
-import com.felipe.timetracker.constants.DatabaseConstants.DAILY_GOAL
+import com.felipe.timetracker.constants.DatabaseConstants.GOAL_TABLE
 import java.io.Serializable
 import javax.persistence.*
 
-@Entity(name = DAILY_GOAL)
-data class DailyGoal(
+@Entity(name = GOAL_TABLE)
+data class Goal(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
