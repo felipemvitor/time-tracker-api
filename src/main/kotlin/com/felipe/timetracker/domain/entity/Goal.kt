@@ -1,5 +1,7 @@
 package com.felipe.timetracker.domain.entity
 
+import com.felipe.timetracker.api.model.response.ActivityResponse
+import com.felipe.timetracker.api.model.response.GoalResponse
 import com.felipe.timetracker.constants.DatabaseConstants
 import com.felipe.timetracker.constants.DatabaseConstants.GOAL_TABLE
 import java.io.Serializable
@@ -19,7 +21,7 @@ data class Goal(
 
     @NotNull
     @Column(name = DatabaseConstants.YEARLY_GOAL)
-    var yearGoal: Long,
+    var yearlyGoal: Long,
 
     @NotNull
     @Column(name = DatabaseConstants.WEEKLY_GOAL)
@@ -33,4 +35,24 @@ data class Goal(
     @Column(name = DatabaseConstants.WOW_GOAL_MULTIPLIER)
     var wowGoalMultiplier: Double
 
-) : Serializable
+) : Serializable {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Goal
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
+
+    fun toGoalResponse(): GoalResponse {
+        return GoalResponse(id!!, name!!, yearlyGoal!!, weeklyGoal!!, dailyGoal!!, wowGoalMultiplier!!)
+    }
+}

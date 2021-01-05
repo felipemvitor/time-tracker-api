@@ -1,5 +1,6 @@
 package com.felipe.timetracker.domain.entity
 
+import com.felipe.timetracker.api.model.response.CategoryResponse
 import com.felipe.timetracker.constants.DatabaseConstants.CATEGORY_TABLE
 import com.felipe.timetracker.constants.DatabaseConstants.DAILY_GOAL
 import com.felipe.timetracker.constants.DatabaseConstants.NAME
@@ -20,25 +21,27 @@ data class Category(
 
     @NotBlank
     @Column(name = NAME)
-    var name: String,
+    var name: String?,
 
     @NotNull
     @Column(name = YEARLY_GOAL)
-    var yearGoal: Long,
+    var yearlyGoal: Long?,
 
     @NotNull
     @Column(name = WEEKLY_GOAL)
-    var weeklyGoal: Long,
+    var weeklyGoal: Long?,
 
     @NotNull
     @Column(name = DAILY_GOAL)
-    var dailyGoal: Double,
+    var dailyGoal: Double?,
 
     @NotNull
     @Column(name = WOW_GOAL_MULTIPLIER)
-    var wowGoalMultiplier: Double
+    var wowGoalMultiplier: Double?
 
 ) : Serializable {
+
+    constructor(id: Long?) : this(id, null, null, null, null, null)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -53,5 +56,9 @@ data class Category(
 
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
+    }
+
+    fun toCategoryResponse(): CategoryResponse {
+        return CategoryResponse(id, name!!, yearlyGoal!!, weeklyGoal!!, dailyGoal!!, wowGoalMultiplier!!)
     }
 }

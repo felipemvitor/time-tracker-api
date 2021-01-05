@@ -1,5 +1,6 @@
 package com.felipe.timetracker.domain.entity
 
+import com.felipe.timetracker.api.model.response.ActivityResponse
 import com.felipe.timetracker.constants.DatabaseConstants.ACTIVITY_TABLE
 import com.felipe.timetracker.constants.DatabaseConstants.CATEGORY_ID
 import com.felipe.timetracker.constants.DatabaseConstants.DATE_END
@@ -49,5 +50,9 @@ data class Activity(
 
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
+    }
+
+    fun toActivityResponse(): ActivityResponse {
+        return ActivityResponse(id!!, name, dateStart, dateEnd, category.toCategoryResponse())
     }
 }
