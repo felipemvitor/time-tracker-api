@@ -5,7 +5,6 @@ import com.felipe.timetracker.api.model.response.CategoryResponse
 import com.felipe.timetracker.constants.ApiConstants
 import com.felipe.timetracker.constants.DatabaseConstants
 import com.felipe.timetracker.domain.entity.Category
-import org.hibernate.dialect.Database
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -28,10 +27,23 @@ class CategoryController {
 
     @GetMapping("/{id}")
     fun getCategoryById(@PathVariable id: Long): ResponseEntity<CategoryResponse> {
-        return ResponseEntity.ok(DatabaseConstants.fakeCategories
-            .find { it.id == id }!!
-            .toCategoryResponse()
+        return ResponseEntity.ok(
+            DatabaseConstants.fakeCategories
+                .find { it.id == id }!!
+                .toCategoryResponse()
         )
+    }
+
+    @PutMapping("/{id}")
+    fun updateCategory(@PathVariable id: Long, category: Category): ResponseEntity<CategoryResponse> {
+        return ResponseEntity.ok(
+            DatabaseConstants.fakeCategories.find { it.id == id }!!.toCategoryResponse()
+        )
+    }
+
+    @DeleteMapping("/id")
+    fun deleteActivity(@PathVariable id: Long): ResponseEntity<Boolean> {
+        return ResponseEntity.ok(true)
     }
 
 }
