@@ -1,5 +1,6 @@
 package com.felipe.timetracker.domain.entity
 
+import com.felipe.timetracker.api.model.response.ActivityCategoryResponse
 import com.felipe.timetracker.api.model.response.CategoryResponse
 import com.felipe.timetracker.constants.DatabaseConstants.CATEGORY_TABLE
 import com.felipe.timetracker.constants.DatabaseConstants.DAILY_GOAL
@@ -56,6 +57,10 @@ data class Category(
 
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
+    }
+
+    fun toActivityCategoryResponse(): ActivityCategoryResponse {
+        return ActivityCategoryResponse(id, name!!)
     }
 
     fun toCategoryResponse(): CategoryResponse {

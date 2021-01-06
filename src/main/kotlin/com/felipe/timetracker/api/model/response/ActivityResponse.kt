@@ -5,5 +5,5 @@ data class ActivityResponse(
     val name: String,
     val dateStart: Long,
     val dateEnd: Long,
-    val category: CategoryResponse
+    val category: ActivityCategoryResponse
 )

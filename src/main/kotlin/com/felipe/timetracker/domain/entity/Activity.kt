@@ -53,6 +53,6 @@ data class Activity(
     }
 
     fun toActivityResponse(): ActivityResponse {
-        return ActivityResponse(id!!, name, dateStart, dateEnd, category.toCategoryResponse())
+        return ActivityResponse(id!!, name, dateStart, dateEnd, category.toActivityCategoryResponse())
     }
 }
