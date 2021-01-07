@@ -1,6 +1,9 @@
 package com.felipe.timetracker.api.exceptionhandler
 
 import com.felipe.timetracker.domain.exeption.BusinessException
+import com.felipe.timetracker.domain.exeption.EndDateLessThanStartException
+import com.felipe.timetracker.domain.exeption.EntityBeingUsedException
+import com.felipe.timetracker.domain.exeption.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
@@ -53,17 +56,27 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
         return handleExceptionInternal(ex, apiError, headers, status, request)
     }
 
+    @ExceptionHandler(EntityNotFoundException::class)
+    fun handleEntityNotFoundException(ex: EntityNotFoundException, request: WebRequest): ResponseEntity<Any> {
+        return handleCustomException(HttpStatus.NOT_FOUND, ApiErrorType.RESOURCE_NOT_FOUND, ex, request)
+    }
+
+    @ExceptionHandler(EntityBeingUsedException::class)
+    fun handleEntityBeingUsedException(ex: EntityBeingUsedException, request: WebRequest): ResponseEntity<Any> {
+        return handleCustomException(HttpStatus.CONFLICT, ApiErrorType.ENTITY_BEING_USED, ex, request)
+    }
+
+    @ExceptionHandler(EndDateLessThanStartException::class)
+    fun handleEndDateLessThanStartException(
+        ex: EndDateLessThanStartException,
+        request: WebRequest
+    ): ResponseEntity<Any> {
+        return handleCustomException(HttpStatus.BAD_REQUEST, ApiErrorType.INVALID_PARAMETER, ex, request)
+    }
+
     @ExceptionHandler(BusinessException::class)
     fun handleBusinessException(ex: BusinessException, request: WebRequest): ResponseEntity<Any> {
-        val status = HttpStatus.BAD_REQUEST
-        val detail = ex.message!!
-
-        val apiError = createApiError(status, ApiErrorType.BUSINESS_ERROR, detail)
-            .apply {
-                userMessage = detail
-            }
-
-        return handleExceptionInternal(ex, apiError, HttpHeaders(), status, request)
+        return handleCustomException(HttpStatus.BAD_REQUEST, ApiErrorType.BUSINESS_ERROR, ex, request)
     }
 
     private fun createApiError(httpStatus: HttpStatus, errorType: ApiErrorType, detailMessage: String): ApiError {
@@ -75,6 +88,20 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
                 title = errorType.title
                 detail = detailMessage
             }
+    }
+
+    private fun handleCustomException(
+        status: HttpStatus,
+        type: ApiErrorType,
+        ex: Exception,
+        request: WebRequest
+    ): ResponseEntity<Any> {
+        val detail = ex.message!!
+
+        val apiError = createApiError(status, type, detail)
+            .apply { userMessage = detail }
+
+        return handleExceptionInternal(ex, apiError, HttpHeaders(), status, request)
     }
 
     data class Object(
