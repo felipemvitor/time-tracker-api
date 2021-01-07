@@ -20,8 +20,8 @@ class CategoryService {
     }
 
     @Transactional
-    fun saveAll(activities: ArrayList<Category>) {
-        categoryRepository.saveAll(activities)
+    fun saveAll(activities: List<Category>): List<Category> {
+        return categoryRepository.saveAll(activities)
     }
 
     @Transactional

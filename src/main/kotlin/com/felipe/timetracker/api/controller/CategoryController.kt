@@ -5,33 +5,41 @@ import com.felipe.timetracker.api.model.response.CategoryResponse
 import com.felipe.timetracker.constants.ApiConstants
 import com.felipe.timetracker.constants.DatabaseConstants
 import com.felipe.timetracker.domain.entity.Category
+import com.felipe.timetracker.domain.repository.CategoryRepository
+import com.felipe.timetracker.domain.service.CategoryService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping(value = [ApiConstants.CATEGORY_URL])
 class CategoryController {
 
+    @Autowired
+    private lateinit var categoryRepository: CategoryRepository
+
+    @Autowired
+    private lateinit var categoryService: CategoryService
 
     @PostMapping
-    fun createCategories(categories: List<CategoryRequest>): ResponseEntity<List<CategoryResponse>> {
-        return ResponseEntity.ok(DatabaseConstants.fakeCategories.map {
-            it.toCategoryResponse()
-        })
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createCategories(@RequestBody categoriesRequest: List<CategoryRequest>): List<CategoryResponse> {
+        val categories = categoriesRequest.map { it.toCategory() }
+
+        return categoryService.saveAll(categories)
+            .map { it.toCategoryResponse() }
     }
 
     @GetMapping
-    fun getCategories(): ResponseEntity<List<CategoryResponse>> {
-        return ResponseEntity.ok(DatabaseConstants.fakeCategories.map { it.toCategoryResponse() })
+    fun getCategories(): List<CategoryResponse> {
+        return categoryRepository.findAll().map { it.toCategoryResponse() }.toList()
     }
 
     @GetMapping("/{id}")
-    fun getCategoryById(@PathVariable id: Long): ResponseEntity<CategoryResponse> {
-        return ResponseEntity.ok(
-            DatabaseConstants.fakeCategories
-                .find { it.id == id }!!
-                .toCategoryResponse()
-        )
+    fun getCategoryById(@PathVariable id: Long): CategoryResponse {
+         return categoryService.findById(id).toCategoryResponse()
     }
 
     @PutMapping("/{id}")
