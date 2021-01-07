@@ -36,7 +36,7 @@ class GoalController {
         )
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     fun deleteGoal(@PathVariable id: Long): ResponseEntity<Boolean> {
         return ResponseEntity.ok(true)
     }

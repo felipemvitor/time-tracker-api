@@ -41,7 +41,7 @@ class CategoryController {
         )
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     fun deleteActivity(@PathVariable id: Long): ResponseEntity<Boolean> {
         return ResponseEntity.ok(true)
     }

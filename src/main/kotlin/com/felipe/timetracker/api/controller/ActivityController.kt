@@ -6,8 +6,10 @@ import com.felipe.timetracker.api.model.response.CategoryResponse
 import com.felipe.timetracker.constants.ApiConstants
 import com.felipe.timetracker.constants.DatabaseConstants
 import com.felipe.timetracker.domain.entity.Activity
+import com.felipe.timetracker.domain.exeption.BusinessException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = [ApiConstants.ACTIVITY_URL])
@@ -15,6 +17,7 @@ class ActivityController {
 
     @PostMapping
     fun createActivities(@RequestBody activities: Array<ActivityRequest>): ResponseEntity<Array<ActivityResponse>> {
+        throw BusinessException("Test")
         return ResponseEntity.ok(
             DatabaseConstants.fakeActivities.map {
                 it.toActivityResponse()
@@ -39,7 +42,7 @@ class ActivityController {
     }
 
     @GetMapping("/category/{id}")
-    fun getActivitiesByCategoryId(@PathVariable id: Long): ResponseEntity<ActivityResponse>{
+    fun getActivitiesByCategoryId(@PathVariable id: Long): ResponseEntity<ActivityResponse> {
         return ResponseEntity.ok(
             DatabaseConstants.fakeActivities.find { it.category.id == id }!!.toActivityResponse()
         )
@@ -52,7 +55,7 @@ class ActivityController {
         )
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     fun deleteActivity(@PathVariable id: Long): ResponseEntity<Boolean> {
         return ResponseEntity.ok(true)
     }
