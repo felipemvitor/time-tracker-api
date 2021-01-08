@@ -20,8 +20,16 @@ class ActivityService {
     }
 
     @Transactional
-    fun saveAll(activities: ArrayList<Activity>) {
-        activityRepository.saveAll(activities)
+    fun saveAll(activities: List<Activity>): List<Activity> {
+        return activityRepository.saveAll(activities)
+    }
+
+    fun findById(id: Long): Activity {
+        return activityRepository.findById(id).orElseThrow { ActivityNotFoundException(id) }
+    }
+
+    fun findByCategoryId(id: Long): List<Activity> {
+        return activityRepository.findActivitiesByCategoryId(id)
     }
 
     @Transactional
@@ -33,7 +41,4 @@ class ActivityService {
         }
     }
 
-    fun findById(id: Long): Activity {
-        return activityRepository.findById(id).orElseThrow { ActivityNotFoundException(id) }
-    }
 }

@@ -20,8 +20,8 @@ class GoalService {
     }
 
     @Transactional
-    fun saveAll(activities: ArrayList<Goal>) {
-        goalRepository.saveAll(activities)
+    fun saveAll(activities: List<Goal>): List<Goal> {
+        return goalRepository.saveAll(activities)
     }
 
     @Transactional

@@ -60,7 +60,7 @@ data class Category(
     }
 
     fun toActivityCategoryResponse(): ActivityCategoryResponse {
-        return ActivityCategoryResponse(id, name!!)
+        return ActivityCategoryResponse(id, name)
     }
 
     fun toCategoryResponse(): CategoryResponse {

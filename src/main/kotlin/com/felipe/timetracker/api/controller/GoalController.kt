@@ -5,6 +5,10 @@ import com.felipe.timetracker.api.model.response.GoalResponse
 import com.felipe.timetracker.constants.ApiConstants
 import com.felipe.timetracker.constants.DatabaseConstants
 import com.felipe.timetracker.domain.entity.Goal
+import com.felipe.timetracker.domain.repository.GoalRepository
+import com.felipe.timetracker.domain.service.GoalService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -12,21 +16,29 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping(value = [ApiConstants.GOAL_URL])
 class GoalController {
 
+    @Autowired
+    private lateinit var goalRepository: GoalRepository
+
+    @Autowired
+    private lateinit var goalService: GoalService
+
     @PostMapping
-    fun createDailyGoals(goals: List<GoalRequest>): ResponseEntity<List<GoalResponse>> {
-        return ResponseEntity.ok(DatabaseConstants.fakeGoals.map { it.toGoalResponse() })
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createGoals(@RequestBody goalsRequest: List<GoalRequest>): List<GoalResponse> {
+        val goals = goalsRequest.map { it.toGoal() }
+
+        return goalService.saveAll(goals)
+            .map { it.toGoalResponse() }
     }
 
     @GetMapping
-    fun getDailyGoals(): ResponseEntity<List<GoalResponse>> {
-        return ResponseEntity.ok(DatabaseConstants.fakeGoals.map { it.toGoalResponse() })
+    fun getGoals(): List<GoalResponse> {
+        return goalRepository.findAll().map { it.toGoalResponse() }.toList()
     }
 
     @GetMapping("/{id}")
-    fun getGoalById(@PathVariable id: Long): ResponseEntity<GoalResponse> {
-        return ResponseEntity.ok(
-            DatabaseConstants.fakeGoals.find { it.id == id }!!.toGoalResponse()
-        )
+    fun getGoalById(@PathVariable id: Long): GoalResponse {
+        return goalService.findById(id).toGoalResponse()
     }
 
     @PutMapping("/{id}")
